@@ -80,8 +80,8 @@ def create_app():
     app.register_blueprint(payment_bp)
     app.register_blueprint(maintenance_bp)
 
-    @app.before_first_request
-    def create_tables():
+    # Create tables at application startup
+    with app.app_context():
         db.create_all()
 
     # example socket event for notifications
