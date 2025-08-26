@@ -64,11 +64,11 @@ def create_app():
     def gpt_endpoint():
         question = request.json.get('question', '')
         try:
-            completion = openai.ChatCompletion.create(
+            completion = openai.chat.completions.create(
                 model='gpt-3.5-turbo',
                 messages=[{'role': 'user', 'content': question}]
             )
-            answer = completion.choices[0].message['content']
+            answer = completion.choices[0].message.content
             return jsonify({'answer': answer})
         except Exception as exc:
             return jsonify({'error': str(exc)}), 500
