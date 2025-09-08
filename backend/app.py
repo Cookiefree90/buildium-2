@@ -9,13 +9,22 @@ from flask_socketio import SocketIO
 import os
 import openai
 
-from .models import db, User
-from .routes.property import bp as property_bp
-from .routes.tenant import bp as tenant_bp
-from .routes.lease import bp as lease_bp
-from .routes.payment import bp as payment_bp
-from .routes.maintenance import bp as maintenance_bp
-from .utils import role_required
+try:
+    from .models import db, User
+    from .routes.property import bp as property_bp
+    from .routes.tenant import bp as tenant_bp
+    from .routes.lease import bp as lease_bp
+    from .routes.payment import bp as payment_bp
+    from .routes.maintenance import bp as maintenance_bp
+    from .utils import role_required
+except ImportError:
+    from models import db, User
+    from routes.property import bp as property_bp
+    from routes.tenant import bp as tenant_bp
+    from routes.lease import bp as lease_bp
+    from routes.payment import bp as payment_bp
+    from routes.maintenance import bp as maintenance_bp
+    from utils import role_required
 
 
 def create_app():

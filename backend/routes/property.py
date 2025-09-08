@@ -1,7 +1,11 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
-from ..models import db, Property
-from ..utils import role_required
+try:
+    from ..models import db, Property
+    from ..utils import role_required
+except ImportError:
+    from models import db, Property
+    from utils import role_required
 
 bp = Blueprint('properties', __name__, url_prefix='/api/properties')
 
