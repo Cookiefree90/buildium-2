@@ -79,3 +79,59 @@ class CommunicationLog(db.Model):
     message = db.Column(db.Text)
     message_type = db.Column(db.String(50))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+class StateRequirement(db.Model):
+    __tablename__ = 'state_requirements'
+    requirement_id = db.Column(db.Integer, primary_key=True)
+    state_code = db.Column(db.String(2), nullable=False)  # AL, AK, AZ, etc.
+    state_name = db.Column(db.String(100), nullable=False)
+    agency_name = db.Column(db.String(200))  # DMV, DOT, etc.
+    required_documents = db.Column(db.Text)  # JSON array of required documents
+    fees = db.Column(db.Text)  # JSON object with fee information
+    processing_time = db.Column(db.String(100))
+    contact_info = db.Column(db.Text)  # JSON object with contact details
+    special_requirements = db.Column(db.Text)  # State-specific notes
+    website_url = db.Column(db.String(500))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class MobileHome(db.Model):
+    __tablename__ = 'mobile_homes'
+    mobile_home_id = db.Column(db.Integer, primary_key=True)
+    vin_number = db.Column(db.String(17), unique=True, nullable=False)
+    serial_number = db.Column(db.String(50))
+    make = db.Column(db.String(100))
+    model = db.Column(db.String(100))
+    year = db.Column(db.Integer)
+    width = db.Column(db.Float)  # Width in feet
+    length = db.Column(db.Float)  # Length in feet
+    property_id = db.Column(db.Integer, db.ForeignKey('properties.property_id'))
+    current_owner_name = db.Column(db.String(200))
+    current_owner_address = db.Column(db.Text)
+    current_owner_phone = db.Column(db.String(20))
+    previous_owner_name = db.Column(db.String(200))
+    previous_owner_address = db.Column(db.Text)
+    title_status = db.Column(db.String(50))  # 'missing', 'lost', 'abandoned', 'clear'
+    lien_holder = db.Column(db.String(200))
+    lien_amount = db.Column(db.Float)
+    acquisition_date = db.Column(db.Date)
+    acquisition_method = db.Column(db.String(50))  # 'abandonment', 'purchase', 'inheritance'
+    park_location_space = db.Column(db.String(50))
+    manufactured_date = db.Column(db.Date)
+    purchase_price = db.Column(db.Float)
+    current_value = db.Column(db.Float)
+    condition_notes = db.Column(db.Text)
+    recovery_status = db.Column(db.String(50), default='pending')  # 'pending', 'in_progress', 'completed', 'failed'
+    recovery_notes = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class RecoveryDocument(db.Model):
+    __tablename__ = 'recovery_documents'
+    document_id = db.Column(db.Integer, primary_key=True)
+    mobile_home_id = db.Column(db.Integer, db.ForeignKey('mobile_homes.mobile_home_id'))
+    document_type = db.Column(db.String(100))  # 'bill_of_sale', 'affidavit', 'lien_release', etc.
+    document_name = db.Column(db.String(200))
+    file_path = db.Column(db.String(500))
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    notes = db.Column(db.Text)

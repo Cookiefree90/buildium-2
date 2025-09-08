@@ -16,6 +16,9 @@ try:
     from .routes.lease import bp as lease_bp
     from .routes.payment import bp as payment_bp
     from .routes.maintenance import bp as maintenance_bp
+    from .routes.mobile_home import bp as mobile_home_bp
+    from .routes.state_requirement import bp as state_requirement_bp
+    from .routes.excel_export import bp as excel_export_bp
     from .utils import role_required
 except ImportError:
     from models import db, User
@@ -24,6 +27,9 @@ except ImportError:
     from routes.lease import bp as lease_bp
     from routes.payment import bp as payment_bp
     from routes.maintenance import bp as maintenance_bp
+    from routes.mobile_home import bp as mobile_home_bp
+    from routes.state_requirement import bp as state_requirement_bp
+    from routes.excel_export import bp as excel_export_bp
     from utils import role_required
 
 
@@ -88,6 +94,9 @@ def create_app():
     app.register_blueprint(lease_bp)
     app.register_blueprint(payment_bp)
     app.register_blueprint(maintenance_bp)
+    app.register_blueprint(mobile_home_bp)
+    app.register_blueprint(state_requirement_bp)
+    app.register_blueprint(excel_export_bp)
 
     # Create tables at application startup
     with app.app_context():
