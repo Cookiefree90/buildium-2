@@ -1,7 +1,11 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required
-from ..models import db, MaintenanceRequest
-from ..utils import role_required
+try:
+    from ..models import db, MaintenanceRequest
+    from ..utils import role_required
+except ImportError:
+    from models import db, MaintenanceRequest
+    from utils import role_required
 
 bp = Blueprint('maintenance', __name__, url_prefix='/api/maintenance')
 
